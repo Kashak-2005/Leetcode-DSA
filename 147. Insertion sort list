@@ -1,0 +1,73 @@
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode() {}
+    ListNode(int val) {
+        this.val = val;
+    }
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+
+    public static ListNode deserialize(String data) {
+        if (data == null || data.equals("[]") || data.isEmpty()) {
+            return null;
+        }
+
+        data = data.substring(1, data.length() - 1);
+        String[] parts = data.split(",");
+
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+        for (String part : parts) {
+            current.next = new ListNode(Integer.parseInt(part.trim()));
+            current = current.next;
+        }
+        return dummy.next;
+    }
+
+    public String serialize() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        ListNode current = this;
+        while (current != null) {
+            sb.append(current.val);
+            if (current.next != null) {
+                sb.append(",");
+            }
+            current = current.next;
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+}
+
+public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode dummy = new ListNode(0);
+        ListNode current = head;
+
+        while (current != null) {
+        
+            ListNode nextNode = current.next;
+
+            ListNode prev = dummy;
+            while (prev.next != null && prev.next.val < current.val) {
+                prev = prev.next;
+            }
+
+            current.next = prev.next;
+            prev.next = current;
+
+            current = nextNode;
+        }
+
+        return dummy.next;
+    }
+}
