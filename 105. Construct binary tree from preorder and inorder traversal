@@ -55,12 +55,12 @@ public class Solution {
         int[] preorder1 = {3, 9, 20, 15, 7};
         int[] inorder1 = {9, 3, 15, 20, 7};
         TreeNode root1 = solution.buildTree(preorder1, inorder1);
-        printTree(root1); // Output: [3, 9, 20, null, null, 15, 7]
+        printTree(root1); 
 
         int[] preorder2 = {-1};
         int[] inorder2 = {-1};
         TreeNode root2 = solution.buildTree(preorder2, inorder2);
-        printTree(root2); // Output: [-1]
+        printTree(root2);
     }
 
     private static void printTree(TreeNode root) {
