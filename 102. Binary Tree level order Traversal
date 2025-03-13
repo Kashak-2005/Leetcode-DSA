@@ -21,7 +21,7 @@ class TreeNode {
     }
 }
 
-public class Solution { // Renamed to Solution
+public class Solution { 
     public List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> result = new ArrayList<>();
         if (root == null) {
