@@ -22,8 +22,8 @@ class Solution {
         if (node == null) {
             return;
         }
-        result.add(node.val);       // Visit root
-        traverse(node.left, result); // Traverse left subtree
-        traverse(node.right, result); // Traverse right subtree
+        result.add(node.val);       
+        traverse(node.left, result); 
+        traverse(node.right, result); 
     }
 }
