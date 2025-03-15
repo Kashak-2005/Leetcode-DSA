@@ -1,0 +1,97 @@
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null) {
+            return null;
+        }
+
+        if (key < root.val) {
+       
+            root.left = deleteNode(root.left, key);
+        } else if (key > root.val) {
+           
+            root.right = deleteNode(root.right, key);
+        } else {
+            
+            if (root.left == null) {
+                return root.right;
+            } else if (root.right == null) {
+                return root.left; 
+            }
+
+            TreeNode successor = findMin(root.right);
+            root.val = successor.val; 
+            root.right = deleteNode(root.right, successor.val); 
+        }
+        return root;
+    }
+
+    private TreeNode findMin(TreeNode node) {
+        while (node.left != null) {
+            node = node.left; 
+        }
+        return node;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+      
+        TreeNode root1 = new TreeNode(5);
+        root1.left = new TreeNode(3, new TreeNode(2), new TreeNode(4));
+        root1.right = new TreeNode(6, null, new TreeNode(7));
+        TreeNode result1 = solution.deleteNode(root1, 3);
+        printTree(result1); 
+
+        TreeNode root2 = new TreeNode(5);
+        root2.left = new TreeNode(3, new TreeNode(2), new TreeNode(4));
+        root2.right = new TreeNode(6, null, new TreeNode(7));
+        TreeNode result2 = solution.deleteNode(root2, 0);
+        printTree(result2); 
+
+        TreeNode root3 = null;
+        TreeNode result3 = solution.deleteNode(root3, 0);
+        printTree(result3); 
+    }
+    private static void printTree(TreeNode root) {
+        if (root == null) {
+            System.out.println("[]");
+            return;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        List<String> result = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if (node == null) {
+                result.add("null");
+            } else {
+                result.add(String.valueOf(node.val));
+                queue.add(node.left);
+                queue.add(node.right);
+            }
+        }
+        
+        while (result.get(result.size() - 1).equals("null")) {
+            result.remove(result.size() - 1);
+        }
+        System.out.println(result);
+    }
+}
