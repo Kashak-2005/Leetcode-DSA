@@ -1,0 +1,85 @@
+class Solution {
+    class DSU {
+        int[] parent;
+        int[] rank;
+
+        DSU(int n) {
+            parent = new int[n];
+            rank = new int[n];
+            for (int i = 0; i < n; i++) parent[i] = i;
+        }
+
+        int find(int x) {
+            if (parent[x] != x)
+                parent[x] = find(parent[x]);
+            return parent[x];
+        }
+
+        boolean union(int x, int y) {
+            int xr = find(x), yr = find(y);
+            if (xr == yr) return false;
+            if (rank[xr] < rank[yr]) parent[xr] = yr;
+            else if (rank[xr] > rank[yr]) parent[yr] = xr;
+            else {
+                parent[yr] = xr;
+                rank[xr]++;
+            }
+            return true;
+        }
+    }
+    private int buildMST(int n, int[][] edges, int exclude, int include) {
+        DSU dsu = new DSU(n);
+        int weight = 0;
+        if (include != -1) {
+            int[] e = edges[include];
+            dsu.union(e[0], e[1]);
+            weight += e[2];
+        }
+
+        for (int i = 0; i < edges.length; i++) {
+            if (i == exclude) continue;
+            int[] e = edges[i];
+            if (dsu.union(e[0], e[1])) {
+                weight += e[2];
+            }
+        }
+
+        int root = dsu.find(0);
+        for (int i = 1; i < n; i++) {
+            if (dsu.find(i) != root)
+                return Integer.MAX_VALUE;
+        }
+        return weight;
+    }
+
+    public List<List<Integer>> findCriticalAndPseudoCriticalEdges(int n, int[][] edges) {
+        int m = edges.length;
+        int[][] newEdges = new int[m][4];
+        for (int i = 0; i < m; i++) {
+            newEdges[i][0] = edges[i][0];
+            newEdges[i][1] = edges[i][1];
+            newEdges[i][2] = edges[i][2];
+            newEdges[i][3] = i;  
+        }
+
+        Arrays.sort(newEdges, (a, b) -> a[2] - b[2]);
+
+        int baseWeight = buildMST(n, newEdges, -1, -1);
+        List<Integer> critical = new ArrayList<>();
+        List<Integer> pseudoCritical = new ArrayList<>();
+
+        for (int i = 0; i < m; i++) {
+            int edgeIndex = newEdges[i][3];
+            if (buildMST(n, newEdges, i, -1) > baseWeight) {
+                critical.add(edgeIndex);
+            } else if (buildMST(n, newEdges, -1, i) == baseWeight) {
+                pseudoCritical.add(edgeIndex);
+            }
+        }
+
+        List<List<Integer>> result = new ArrayList<>();
+        result.add(critical);
+        result.add(pseudoCritical);
+        return result;
+    }
+}
