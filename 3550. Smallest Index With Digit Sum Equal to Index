@@ -1,0 +1,11 @@
+class Solution:
+    def smallestIndex(self, nums: List[int]) -> int:
+        for index, number in enumerate(nums):   
+            digit = 0
+            temp = number
+            while temp > 0:
+                digit += temp % 10  
+                temp
+            if digit % 10 == index % 10:
+                return index
+        return -1
