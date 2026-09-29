@@ -1,0 +1,20 @@
+class Solution:
+    def canCross(self, stones: List[int]) -> bool:
+        stone_map = {stone: i for i, stone in enumerate(stones)}
+        memo = {}
+        def dfs(i, k):
+            if i == len(stones) - 1:
+                return True
+            if (i, k) in memo:
+                return memo[(i, k)]
+            for jump in [k-1, k, k+1]:
+                if jump > 0:
+                    next_pos = stones[i] + jump
+                    if next_pos in stone_map:
+                        next_index = stone_map[next_pos]
+                        if dfs(next_index, jump):
+                            memo[(i, k)] = True
+                            return True
+            memo[(i, k)] = False
+            return False
+        return dfs(0, 0)
