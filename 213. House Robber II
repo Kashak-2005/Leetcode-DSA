@@ -1,0 +1,38 @@
+class Solution:
+    # left to right
+    def rob(self, nums: List[int]) -> int:
+        n=len(nums)
+        if n==1:
+            return nums[0]
+        def helper(arr):
+            n=len(arr)
+            if n==1:
+                return arr[0]
+            dp=[0]*n
+            dp[0]=arr[0]
+            dp[1]=max(arr[0],arr[1])
+            for i in range(2,n):
+                dp[i]=max(dp[i-1],arr[i]+dp[i-2])
+            return dp[-1]
+        case1=helper(nums[:-1])
+        case2=helper(nums[1:])
+        return max(case1,case2)
+
+    # right to left
+    def rob(nums):
+    n = len(nums)
+    if n == 1:
+        return nums[0]
+    def solve(arr):
+        m = len(arr)
+        dp = [0] * (m + 2)
+        for i in range(m - 1, -1, -1):
+            take = arr[i] + dp[i + 2]
+            skip = dp[i + 1]
+            dp[i] = max(take, skip)
+        return dp[0]
+    case1 = solve(nums[:-1])  # exclude last
+    case2 = solve(nums[1:])   # exclude first
+    return max(case1, case2)
+
+        
