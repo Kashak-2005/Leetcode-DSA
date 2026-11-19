@@ -1,0 +1,7 @@
+class Solution:
+    def minimizeSum(self, nums: List[int]) -> int:
+        nums.sort()
+        tmin = nums[-1] - nums[2]
+        tmax = nums[-3] - nums[0]
+        minmax = nums[-2] - nums[1]
+        return min(tmin, tmax, minmax)
